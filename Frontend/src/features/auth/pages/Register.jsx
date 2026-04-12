@@ -181,7 +181,7 @@ const Register = () => {
             <input
               id="terms" name="terms" type="checkbox"
               checked={formData.terms} onChange={handleChange}
-              className="h-3.5 w-3.5 rounded-none border-stone-300 accent-primary cursor-pointer flex-shrink-0"
+              className="h-3.5 w-3.5 rounded-none border-stone-300 accent-primary cursor-pointer shrink-0"
             />
             <label htmlFor="terms" className="text-[10px] text-muted font-light leading-snug">
               I agree to the{' '}
