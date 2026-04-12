@@ -1,0 +1,23 @@
+/* ─────────────────────────────────────────────
+   CSS that cannot be expressed in Tailwind
+   ───────────────────────────────────────────── */
+
+/* Material Symbols Outlined — font-variation-settings has no Tailwind utility */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 20;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  font-size: 18px;
+}
+
+/* Base body — sets fonts globally via CSS variable tokens */
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+}

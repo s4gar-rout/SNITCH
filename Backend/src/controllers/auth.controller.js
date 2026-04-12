@@ -23,7 +23,7 @@ async function sendTokenResponse(user, res, message) {
 }
 
 export const register = async (req, res) => {
-  const { fullname, contact, email, password } = req.body;
+  const { fullname, contact, email, password, isSeller } = req.body;
   // Check if user already exists with the same email or contact
   try {
     const existingUser = await userModel.findOne({
@@ -41,7 +41,8 @@ export const register = async (req, res) => {
       contact,
       email,
       password,
-      
+      role: isSeller ? "seller" : "buyer",
+
     });
     await sendTokenResponse(user, res, "User registered successfully");
   } catch (err) {
@@ -51,3 +52,26 @@ export const register = async (req, res) => {
     });
   }
 };
+
+
+export const login = async (req, res) => {
+  const { email, password } = req.body
+
+  const user = await userModel.findOne({ email });
+
+  if (!user) {
+    return res.status(400).json({
+      message: "Invalid Email or Password"
+    })
+  }
+
+  const isMatch = await user.comparePassword(password)
+  if (!isMatch) {
+    return res.status(400).json({
+      message: "Invalid Password"
+    })
+  }
+
+  await sendTokenResponse(user, res, "User Logged in successfully")
+
+}
