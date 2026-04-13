@@ -37,7 +37,7 @@ const AppleIcon = () => (
 );
 
 const btnClass =
-  "flex items-center justify-center gap-2 border border-stone-200 py-2.5 text-[9px] font-label tracking-[0.12em] uppercase text-stone-600 hover:border-stone-400 hover:bg-stone-50 active:scale-[0.99] transition-all duration-300 cursor-pointer";
+  "flex items-center justify-center gap-2 border border-stone-200 py-2 text-[9px] font-label tracking-[0.12em] uppercase text-stone-600 hover:border-stone-400 hover:bg-stone-50 active:scale-[0.99] transition-all duration-300 cursor-pointer";
 
 /**
  * SocialButtons — OR divider + Google + Apple side-by-side buttons.
@@ -54,7 +54,7 @@ const SocialButtons = ({ onGoogle, onApple }) => {
   return (
     <>
       {/* OR Divider */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 my-2">
         <div className="flex-1 border-t border-stone-200" />
         <span className="font-label text-[9px] tracking-[0.2em] uppercase text-stone-400">
           OR

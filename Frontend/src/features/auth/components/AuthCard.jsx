@@ -4,19 +4,19 @@ import React from 'react'
  * AuthCard — full-page layout wrapper with centered card overlay and footer.
  * Used by both Login and Register pages.
  */
-const AuthCard = ({ children, cardPadding = 'py-10' }) => {
+const AuthCard = ({ children, cardPadding = 'py-6' }) => {
   return (
     <div className="h-screen flex flex-col bg-stone-100 font-body text-on-surface overflow-hidden">
 
       {/* Centered main area */}
       <main className="flex-1 flex items-center justify-center px-4">
-        <div className={`w-full max-w-md border border-stone-200  px-10 ${cardPadding}`}>
+        <div className={`w-full max-w-[420px] border border-stone-200 px-8 ${cardPadding}`}>
           {children}
         </div>
       </main>
 
       {/* Minimal footer */}
-      <footer className="w-full border-t border-stone-300 py-3 px-6">
+      <footer className="w-full border-t border-stone-300 py-5 px-4">
         <div className="flex justify-center gap-6">
           {['Privacy Policy', 'Terms of Service', 'Contact'].map((item) => (
             <a

@@ -44,7 +44,7 @@ const PasswordField = ({
           {icon}
         </span>
         <input
-          className="w-full bg-transparent border-0 py-2.5 px-0 outline-none focus:ring-0 placeholder:text-stone-300 text-on-surface text-sm font-body"
+          className="w-full bg-transparent border-0 py-2 px-0 outline-none focus:ring-0 placeholder:text-stone-300 text-on-surface text-sm font-body"
           id={id}
           name={name}
           type={show ? 'text' : 'password'}

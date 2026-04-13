@@ -34,20 +34,20 @@ const Login = () => {
   return (
     <AuthCard cardPadding="py-10">
       {/* Header */}
-      <header className="mb-8 text-center">
-        <span className="font-label text-[10px] tracking-[0.3em] text-primary uppercase font-bold">
+      <header className="mb-10 text-center">
+        <span className="font-label text-[14px] tracking-[0.3em] text-primary uppercase font-bold">
           WELCOME BACK
         </span>
-        <h1 className="font-headline text-3xl text-on-surface mt-2 font-light tracking-tight">
+        <h1 className="font-headline text-3xl text-on-surface mt-4 font-light tracking-tight">
           Sign in
         </h1>
-        <p className="text-muted mt-1.5 font-light text-xs max-w-xs mx-auto">
+        <p className="text-muted mt-3 font-light text-[13px] max-w-xs mx-auto">
           Access your curated collection and continue your journey.
         </p>
       </header>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-6 ">
         {/* Email */}
         <FormField
           id="email"
@@ -81,7 +81,7 @@ const Login = () => {
         <div className="pt-2 flex flex-col gap-3">
           <button
             type="submit"
-            className="w-full bg-primary text-white py-3.5 font-label text-[10px] tracking-[0.3em] uppercase hover:bg-stone-900 active:scale-[0.99] transition-all duration-300 cursor-pointer"
+            className="w-full bg-primary text-white py-2.5 font-label text-[10px] tracking-[0.3em] uppercase hover:bg-stone-900 active:scale-[0.99] transition-all duration-300 cursor-pointer"
           >
             Sign In
           </button>
