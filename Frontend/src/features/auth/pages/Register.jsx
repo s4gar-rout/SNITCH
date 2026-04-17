@@ -1,21 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
-import AuthCard from "../components/AuthCard";
-import FormField from "../components/FormField";
-import PasswordField from "../components/PasswordField";
-import SocialButtons from "../components/SocialButtons";
+import { Link, useNavigate } from "react-router";
 import { useAuth } from "../hook/useAuth";
-import { useNavigate } from "react-router";
 
 const Register = () => {
   const { handleRegister } = useAuth();
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [role, setRole] = useState("buyer");
+
   const [formData, setFormData] = useState({
     fullname: "",
-    contact: "",
     email: "",
-    role: "", // 'buyer' | 'seller'
+    countryCode: "+1",
+    contact: "",
     password: "",
     confirmPassword: "",
     terms: false,
@@ -29,246 +27,298 @@ const Register = () => {
     }));
   };
 
-  const handleRole = (role) => setFormData((prev) => ({ ...prev, role }));
-
-  const handleNext = (e) => {
-    e.preventDefault();
-    setStep(2);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: dispatch register action
-    await handleRegister({
-      fullname: formData.fullname,
-      contact: formData.contact,
-      email: formData.email,
-      password: formData.password,
-      isSeller: formData.role === "seller",
-    });
-    navigate("/login");
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    if (!formData.terms) {
+      alert("Please agree to the Terms of Service.");
+      return;
+    }
+
+    try {
+      await handleRegister({
+        fullname: formData.fullname,
+        contact: `${formData.countryCode} ${formData.contact}`,
+        email: formData.email,
+        password: formData.password,
+        isSeller: role === "seller",
+      });
+      navigate("/login");
+    } catch (err) {
+      console.log("Registration failed", err);
+    }
   };
 
   return (
-    <AuthCard cardPadding="py-4">
-      {/* Header */}
-      <header className="mb-4 text-center">
-        <span className="font-label text-[13px] tracking-[0.3em] text-primary uppercase font-bold">
-          JOIN THE CURATOR
-        </span>
-        <h1 className="font-headline text-2xl text-on-surface mt-1.5 font-light tracking-tight">
-          Create account
-        </h1>
-        <p className="text-muted mt-1 font-light text-[11px] max-w-xs mx-auto">
-          Experience a collection curated with intention and permanence.
-        </p>
-      </header>
+    <div className="h-screen w-screen grid grid-rows-[1fr_auto] font-satoshi bg-cream text-taupe-dark overflow-hidden">
+      {/* Top Section: Split Screen */}
+      <div className="flex flex-col md:flex-row overflow-hidden min-h-0">
+        {/* Left Side: Visual Narrative (Desktop Only) */}
+        <div className="hidden lg:flex w-1/2 bg-[#F5F1EB] relative overflow-hidden items-center justify-center h-full">
+          <div className="absolute inset-0 opacity-40">
+            <img
+              src="https://images.unsplash.com/photo-1594932224828-b4b059b6ffc0?auto=format&fit=crop&q=80&w=2000"
+              alt="Refined linen texture"
+              className="w-full h-full object-cover mix-blend-multiply filter grayscale-[10%]"
+            />
+          </div>
+          <div className="relative z-10 p-10 max-w-xl text-center md:text-left">
+            <h2 className="text-6xl text-taupe-dark leading-tight mb-3 font-gambetta">
+              The Art of <br />
+              <span className="italic">Curation.</span>
+            </h2>
+            <p className="text-lg text-[#6B5E5E] font-light leading-relaxed">
+              Begin your journey with Essentia Lux. A collective space where
+              timeless silhouettes meet contemporary consciousness.
+            </p>
+          </div>
+        </div>
 
-      {/* Step Indicator */}
-      <div className="flex items-center gap-0 mb-6">
-        {[1, 2].map((s, i) => (
-          <React.Fragment key={s}>
-            <div className="flex flex-col items-center gap-1">
-              <div
-                className={`w-6 h-6 flex items-center justify-center text-[10px] font-label font-bold transition-all duration-300
-                  ${step >= s ? "bg-primary text-white" : "bg-stone-100 text-stone-400 border border-stone-200"}`}
-              >
-                {step > s ? (
-                  <span className="material-symbols-outlined text-[14px]">
-                    check
-                  </span>
-                ) : (
-                  s
-                )}
-              </div>
-              <span
-                className={`font-label text-[8px] tracking-widest uppercase transition-colors duration-300 ${step >= s ? "text-primary" : "text-stone-300"}`}
-              >
-                {s === 1 ? "Info" : "Security"}
-              </span>
+        {/* Right Side: Register Form */}
+        <div className="flex-1 flex flex-col justify-center items-center p-6 md:p-8 lg:p-10 bg-cream relative h-full">
+          <div className="w-full max-w-[440px] py-2">
+            <div className="mb-6 text-center">
+              <h1 className="text-3xl font-medium mb-1 font-gambetta">
+                Join Essentia
+              </h1>
+              <p className="text-taupe font-light text-xs">
+                Create your account to start curating.
+              </p>
             </div>
-            {i < 1 && (
+
+            {/* Role Toggle Switch */}
+            <div className="relative bg-[#EBE5DE] p-1 rounded-full flex mb-6 cursor-pointer overflow-hidden h-11 items-center">
               <div
-                className={`flex-1 h-px mb-4 mx-2 transition-colors duration-500 ${step > 1 ? "bg-primary" : "bg-stone-200"}`}
-              />
-            )}
-          </React.Fragment>
-        ))}
+                className="toggle-slider absolute h-[calc(100%-8px)] w-[calc(50%-4px)] bg-white rounded-full shadow-sm top-1 left-1"
+                style={{
+                  transform:
+                    role === "buyer" ? "translateX(0)" : "translateX(100%)",
+                }}
+              ></div>
+              <button
+                type="button"
+                onClick={() => setRole("buyer")}
+                className={`relative z-10 flex-1 text-sm font-medium transition-colors duration-300 ${
+                  role === "buyer" ? "text-taupe-dark" : "text-taupe"
+                }`}
+              >
+                Buyer
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole("seller")}
+                className={`relative z-10 flex-1 text-sm font-medium transition-colors duration-300 ${
+                  role === "seller" ? "text-taupe-dark" : "text-taupe"
+                }`}
+              >
+                Seller
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="input-focus-effect group border-b border-[#DCD3C9] py-1.5">
+                <label className="block text-[9px] uppercase tracking-widest text-[#A4907C] mb-0.5 font-semibold">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="fullname"
+                  value={formData.fullname}
+                  onChange={handleChange}
+                  placeholder="Julian Rivers"
+                  required
+                  className="w-full bg-transparent border-none focus:ring-0 p-0 text-taupe-dark placeholder:text-[#D1C7BD] text-sm outline-none"
+                />
+              </div>
+
+              <div className="input-focus-effect group border-b border-[#DCD3C9] py-1.5">
+                <label className="block text-[9px] uppercase tracking-widest text-[#A4907C] mb-0.5 font-semibold">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="julian@essentia.com"
+                  required
+                  className="w-full bg-transparent border-none focus:ring-0 p-0 text-taupe-dark placeholder:text-[#D1C7BD] text-sm outline-none"
+                />
+              </div>
+
+              <div className="input-focus-effect group border-b border-[#DCD3C9] py-1.5">
+                <label className="block text-[9px] uppercase tracking-widest text-[#A4907C] mb-0.5 font-semibold">
+                  Contact Number
+                </label>
+                <div className="flex items-center gap-3">
+                  <select
+                    name="countryCode"
+                    value={formData.countryCode}
+                    onChange={handleChange}
+                    className="bg-transparent border-none focus:ring-0 text-taupe text-[10px] p-0 cursor-pointer outline-none"
+                  >
+                    <option value="+1">+1</option>
+                    <option value="+44">+44</option>
+                    <option value="+91">+91</option>
+                    <option value="+33">+33</option>
+                  </select>
+                  <input
+                    type="tel"
+                    name="contact"
+                    value={formData.contact}
+                    onChange={handleChange}
+                    placeholder="987 654 3210"
+                    required
+                    className="w-full bg-transparent border-none focus:ring-0 p-0 text-taupe-dark placeholder:text-[#D1C7BD] text-sm outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="input-focus-effect group border-b border-[#DCD3C9] py-1.5">
+                <div className="flex justify-between items-end">
+                  <label className="block text-[9px] uppercase tracking-widest text-[#A4907C] mb-0.5 font-semibold">
+                    Password
+                  </label>
+                  <div className="flex gap-1 mb-1">
+                    <div
+                      className={`w-5 h-[1px] ${formData.password.length > 0 ? "bg-gold" : "bg-[#C5A059] opacity-30"}`}
+                    ></div>
+                    <div
+                      className={`w-5 h-[1px] ${formData.password.length > 5 ? "bg-gold" : "bg-[#C5A059] opacity-30"}`}
+                    ></div>
+                    <div
+                      className={`w-5 h-[1px] ${formData.password.length > 10 ? "bg-gold" : "bg-[#C5A059] opacity-30"}`}
+                    ></div>
+                  </div>
+                </div>
+                <div className="relative flex items-center">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+                    required
+                    className="w-full bg-transparent border-none focus:ring-0 p-0 text-taupe-dark placeholder:text-[#D1C7BD] text-sm outline-none pr-8"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-0 text-taupe hover:text-taupe-dark transition-colors"
+                  >
+                    <iconify-icon
+                      icon={showPassword ? "lucide:eye-off" : "lucide:eye"}
+                      style={{ fontSize: "18px" }}
+                    ></iconify-icon>
+                  </button>
+                </div>
+              </div>
+
+              <div className="input-focus-effect group border-b border-[#DCD3C9] py-1.5">
+                <div className="flex justify-between items-center">
+                  <label className="block text-[9px] uppercase tracking-widest text-[#A4907C] mb-0.5 font-semibold">
+                    Confirm Password
+                  </label>
+                </div>
+                <div className="relative flex items-center">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+                    required
+                    className="w-full bg-transparent border-none focus:ring-0 p-0 text-taupe-dark placeholder:text-[#D1C7BD] text-sm outline-none pr-8"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-0 text-taupe hover:text-taupe-dark transition-colors"
+                  >
+                    <iconify-icon
+                      icon={showConfirmPassword ? "lucide:eye-off" : "lucide:eye"}
+                      style={{ fontSize: "18px" }}
+                    ></iconify-icon>
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 py-1.5">
+                <input
+                  type="checkbox"
+                  name="terms"
+                  checked={formData.terms}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-4 h-4 rounded border-[#DCD3C9] text-taupe focus:ring-taupe accent-taupe cursor-pointer"
+                />
+                <label className="text-[10px] text-taupe leading-relaxed">
+                  I agree to the{" "}
+                  <Link
+                    to="/terms"
+                    className="text-taupe-dark font-medium underline-animate"
+                  >
+                    Terms
+                  </Link>{" "}
+                  &{" "}
+                  <Link
+                    to="/privacy"
+                    className="text-taupe-dark font-medium underline-animate"
+                  >
+                    Privacy
+                  </Link>
+                  .
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="btn-lift w-full bg-taupe text-white py-4 rounded-xl font-medium text-xs tracking-widest uppercase transition-all flex items-center justify-center gap-2 group mt-1"
+              >
+                Create Account
+                <iconify-icon
+                  icon="lucide:arrow-right"
+                  style={{ fontSize: "18px" }}
+                  className="group-hover:translate-x-1 transition-transform"
+                ></iconify-icon>
+              </button>
+            </form>
+
+            <p className="mt-6 text-center text-sm text-taupe font-light">
+              Already have an account?
+              <Link
+                to="/login"
+                className="text-taupe-dark font-semibold underline-animate ml-1"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* ── Step 1: Personal Info ── */}
-      {step === 1 && (
-        <form onSubmit={handleNext} className="space-y-4">
-          <FormField
-            id="fullname"
-            name="fullname"
-            label="Full Name"
-            type="text"
-            placeholder="Arthur Morgan"
-            icon="person"
-            value={formData.fullname}
-            onChange={handleChange}
-          />
+      {/* Global Footer (Full Width) */}
+      <div className="w-full bg-[#f8f5f1] border-t border-[#DCD3C9] py-3 px-8 flex flex-col md:flex-row justify-between items-center gap-4 z-50">
+        <div className="flex items-center gap-2">
+          <span className="w-6 h-6 rounded-full bg-taupe flex items-center justify-center text-white text-[10px]">E</span>
+          <span className="text-xs font-bold tracking-widest uppercase text-taupe-dark font-satoshi">Essentia Lux</span>
+        </div>
+        
+        <div className="flex flex-wrap justify-center gap-x-10 gap-y-2 text-[10px] uppercase tracking-widest text-[#A4907C] font-semibold">
+          <Link to="/privacy" className="hover:text-taupe-dark transition-colors underline-animate">Privacy Policy</Link>
+          <Link to="/terms" className="hover:text-taupe-dark transition-colors underline-animate">Terms & Conditions</Link>
+          <Link to="/contact" className="hover:text-taupe-dark transition-colors underline-animate">Contact</Link>
+          <Link to="/shop" className="hover:text-taupe-dark transition-colors underline-animate">Shopping</Link>
+        </div>
 
-          <FormField
-            id="contact"
-            name="contact"
-            label="Contact"
-            type="tel"
-            placeholder="+91 98765 43210"
-            icon="call"
-            value={formData.contact}
-            onChange={handleChange}
-          />
-
-          <FormField
-            id="email"
-            name="email"
-            label="Email Address"
-            type="email"
-            placeholder="curator@journal.com"
-            icon="mail"
-            value={formData.email}
-            onChange={handleChange}
-          />
-
-          {/* Role */}
-          <div>
-            <p className="font-label text-[10px] tracking-widest text-secondary uppercase mb-2">
-              I am a
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { value: "buyer", label: "Buyer", icon: "shopping_bag" },
-                { value: "seller", label: "Seller", icon: "storefront" },
-              ].map(({ value, label, icon }) => (
-                <button
-                  key={value}
-                  type="button"
-                  className={`flex items-center justify-center gap-2 py-2 border text-[10px] font-label tracking-[0.15em] uppercase transition-all duration-200 cursor-pointer
-                    ${
-                      formData.role === value
-                        ? "border-primary bg-primary text-white"
-                        : "border-stone-200 text-stone-500 hover:border-stone-400 hover:bg-stone-50"
-                    }`}
-                >
-                  <span className="material-symbols-outlined text-[15px]">
-                    {icon}
-                  </span>
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="pt-2 flex flex-col gap-3">
-            <button
-              type="submit"
-              className="w-full bg-primary text-white py-2.5 font-label text-[10px] tracking-[0.3em] uppercase hover:bg-stone-900 active:scale-[0.99] transition-all duration-300 cursor-pointer"
-            >
-              Continue
-            </button>
-
-            <SocialButtons
-              onGoogle={() => console.log("Google sign-up")}
-              onApple={() => console.log("Apple sign-up")}
-            />
-          </div>
-
-          {/* Login link */}
-          <div className="flex items-center justify-center gap-2 text-[10px] font-light text-muted tracking-wider">
-            <span>ALREADY HAVE AN ACCOUNT?</span>
-            <Link
-              to="/login"
-              className="font-bold text-on-surface tracking-[0.2em] uppercase hover:text-primary transition-colors border-b border-stone-900 leading-none pb-0.5"
-            >
-              Sign In
-            </Link>
-          </div>
-        </form>
-      )}
-
-      {/* ── Step 2: Security ── */}
-      {step === 2 && (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <PasswordField
-            id="password"
-            name="password"
-            label="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-
-          <PasswordField
-            id="confirmPassword"
-            name="confirmPassword"
-            label="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            icon="lock_reset"
-          />
-
-          {/* Terms */}
-          <div className="flex items-center gap-2.5 pt-1">
-            <input
-              id="terms"
-              name="terms"
-              type="checkbox"
-              checked={formData.terms}
-              onChange={handleChange}
-              className="h-3.5 w-3.5 rounded-none border-stone-300 accent-primary cursor-pointer shrink-0"
-            />
-            <label
-              htmlFor="terms"
-              className="text-[10px] text-muted font-light leading-snug"
-            >
-              I agree to the{" "}
-              <a
-                href="#"
-                className="text-primary hover:text-primary-light underline underline-offset-4 transition-colors"
-              >
-                Terms
-              </a>{" "}
-              and{" "}
-              <a
-                href="#"
-                className="text-primary hover:text-primary-light underline underline-offset-4 transition-colors"
-              >
-                Privacy Policy
-              </a>
-              .
-            </label>
-          </div>
-
-          {/* Actions */}
-          <div className="pt-2 flex flex-col gap-3">
-            <button
-              type="submit"
-              className="w-full bg-primary text-white py-2.5 font-label text-[10px] tracking-[0.3em] uppercase hover:bg-stone-900 active:scale-[0.99] transition-all duration-300 cursor-pointer"
-            >
-              Create Account
-            </button>
-
-            <SocialButtons
-              onGoogle={() => console.log("Google sign-up")}
-              onApple={() => console.log("Apple sign-up")}
-            />
-
-            {/* Back */}
-            <button
-              type="button"
-              onClick={() => setStep(1)}
-              className="flex items-center justify-center gap-1.5 text-[10px] font-light text-muted tracking-wider hover:text-primary transition-colors cursor-pointer pt-1"
-            >
-              <span className="material-symbols-outlined text-[14px]">
-                arrow_back
-              </span>
-              Back to info
-            </button>
-          </div>
-        </form>
-      )}
-    </AuthCard>
+        <div className="text-[10px] text-[#A4907C] font-medium tracking-[0.2em] uppercase">
+          Est. 2024 &copy; Essentia Lux
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -35,6 +35,21 @@ const productSchema = new mongoose.Schema(
         }
       },
     ],
+    category: {
+      type: String,
+      enum: ["male", "female", "unisex"],
+      default: "unisex",
+    },
+    sizes: [
+      {
+        type: String,
+      },
+    ],
+    colors: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,

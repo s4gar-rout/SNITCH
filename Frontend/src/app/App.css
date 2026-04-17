@@ -2,35 +2,99 @@
 @import "../styles/globals.css";
 
 @theme {
+  --breakpoint-xs: 375px;
   /* ─── Stitch Aurelian Color Palette ─── */
-  --color-primary:            #775a19;
-  --color-primary-light:      #c5a059;
-  --color-primary-dim:        #e9c176;
-  --color-primary-fixed:      #ffdea5;
-  --color-on-surface:         #1a1c1c;
+  --color-primary: #775a19;
+  --color-on-primary: #ffffff;
+  --color-primary-light: #c5a059;
+  --color-primary-container: #c5a059;
+  --color-primary-dim: #e9c176;
+  --color-primary-fixed: #ffdea5;
+  --color-on-surface: #1a1c1c;
   --color-on-surface-variant: #4e4639;
-  --color-secondary:          #5f5e5e;
-  --color-muted:              #474747;
-  --color-outline:            #7f7667;
-  --color-outline-variant:    #d1c5b4;
-  --color-surface:            #f9f9f9;
-  --color-surface-low:        #f3f3f3;
-  --color-surface-card:       #ffffff;
-  --color-stone-100:          #f5f5f4;
-  --color-stone-200:          #e7e5e4;
-  --color-stone-300:          #d6d3d1;
-  --color-stone-400:          #a8a29e;
-  --color-stone-900:          #1c1917;
-  --color-error:              #ba1a1a;
+  --color-secondary: #5f5e5e;
+  --color-muted: #474747;
+  --color-outline: #7f7667;
+  --color-outline-variant: #d1c5b4;
+  --color-surface: #f9f9f9;
+  --color-surface-low: #f3f3f3;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f3f3f3;
+  --color-surface-container-high: #e8e8e8;
+  --color-surface-card: #ffffff;
+  --color-stone-50: #fafaf9;
+  --color-stone-100: #f5f5f4;
+  --color-stone-200: #e7e5e4;
+  --color-stone-300: #d6d3d1;
+  --color-stone-400: #a8a29e;
+  --color-stone-500: #78716c;
+  --color-stone-900: #1c1917;
+  --color-stone-950: #0c0a09;
+  --color-error: #ba1a1a;
+  --color-amber-200: #fde68a;
+  --color-amber-700: #b45309;
+  --color-amber-800: #92400e;
 
   /* ─── Typography ─── */
   --font-headline: "Noto Serif", serif;
-  --font-body:     "Manrope", sans-serif;
-  --font-label:    "Manrope", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-label: "Manrope", sans-serif;
+  --font-gambetta: "Gambetta", serif;
+  --font-satoshi: "Satoshi", sans-serif;
+
+  /* ─── Premium Palette ─── */
+  --color-cream: #fcfaf7;
+  --color-taupe: #8d7b68;
+  --color-taupe-dark: #4a3e3e;
+  --color-gold: #c5a059;
 
   /* ─── Border Radius ─── */
   --radius-none: 0px;
-  --radius-sm:   2px;
-  --radius-md:   4px;
-  --radius-full: 6px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
+  --radius-xl: 8px;
+  --radius-full: 9999px;
 }
+
+/* ─────────────────────────────────────────────
+   Premium Design Utilities
+   ───────────────────────────────────────────── */
+
+.underline-animate {
+  position: relative;
+}
+.underline-animate::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--color-gold);
+  transition: width 0.3s ease;
+}
+.underline-animate:hover::after {
+  width: 100%;
+}
+
+.toggle-slider {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.input-focus-effect {
+  transition: all 0.3s ease;
+}
+.input-focus-effect:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(141, 123, 104, 0.1);
+  border-color: var(--color-gold);
+}
+
+.btn-lift {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-lift:hover {
+  box-shadow: 0 12px 24px -10px rgba(141, 123, 104, 0.4);
+}
+

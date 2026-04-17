@@ -17,5 +17,21 @@ export const createProductValidator = [
   body("description").notEmpty().withMessage("Description is required"),
   body("priceAmount").isNumeric().withMessage("Price amount must be a number"),
   body("priceCurrency").notEmpty().withMessage("Price currency is required"),
+  body("category")
+    .optional()
+    .isIn(["male", "female", "unisex"])
+    .withMessage("Category must be male, female, or unisex"),
+  body("sizes").optional().custom((value) => {
+    if (typeof value === 'string') {
+        try { JSON.parse(value); return true; } catch (e) { return false; }
+    }
+    return Array.isArray(value);
+  }).withMessage("Sizes must be an array or a JSON string representing an array"),
+  body("colors").optional().custom((value) => {
+    if (typeof value === 'string') {
+        try { JSON.parse(value); return true; } catch (e) { return false; }
+    }
+    return Array.isArray(value);
+  }).withMessage("Colors must be an array or a JSON string representing an array"),
   validateRequest,
 ];
