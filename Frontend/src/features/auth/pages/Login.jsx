@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../hook/useAuth";
+import SocialButtons from "../components/SocialButtons";
+
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -20,7 +22,7 @@ const Login = () => {
         email: formData.email,
         password: formData.password,
       });
-      navigate("/");
+      navigate("/product-dashboard");
     } catch (err) {
       console.log("Login failed", err);
     }
@@ -34,9 +36,9 @@ const Login = () => {
         <div className="hidden lg:flex w-1/2 bg-[#F5F1EB] relative overflow-hidden items-center justify-center h-full">
           <div className="absolute inset-0 opacity-40">
             <img
-              src="https://images.unsplash.com/photo-1539109132314-34a77353979d?auto=format&fit=crop&q=80&w=2000"
+              src="https://images.unsplash.com/photo-1619603364904-c0498317e145?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fGNsb3RoaW5nfGVufDB8fDB8fHww"
               alt="Luxury fabric texture"
-              className="w-full h-full object-cover mix-blend-multiply filter grayscale-[20%]"
+              className="w-full h-full object-cover  object-top mix-blend-multiply filter grayscale-[20%]"
             />
           </div>
           <div className="relative z-10 p-10 max-w-xl text-center md:text-left">
@@ -45,8 +47,8 @@ const Login = () => {
               <span className="italic">intention.</span>
             </h2>
             <p className="text-lg text-[#6B5E5E] font-light leading-relaxed">
-              Join a community dedicated to the art of conscious dressing. Refined
-              pieces for the modern silhouette.
+              Join a community dedicated to the art of conscious dressing.
+              Refined pieces for the modern silhouette.
             </p>
           </div>
         </div>
@@ -107,7 +109,9 @@ const Login = () => {
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-0 text-taupe hover:text-taupe-dark transition-colors"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                     >
                       <iconify-icon
                         icon={showPassword ? "lucide:eye-off" : "lucide:eye"}
@@ -130,26 +134,8 @@ const Login = () => {
                 </button>
               </form>
 
-              <div className="flex items-center gap-5 py-1">
-                <div className="h-[1px] flex-1 bg-[#DCD3C9]"></div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#A4907C]">
-                  or
-                </span>
-                <div className="h-[1px] flex-1 bg-[#DCD3C9]"></div>
-              </div>
+              <SocialButtons />
 
-              {/* Google OAuth placeholder */}
-              <button
-                type="button"
-                onClick={() => console.log("Google sign-in")}
-                className="btn-lift w-full border border-[#DCD3C9] bg-white text-taupe-dark py-4 rounded-xl font-medium text-sm transition-all flex items-center justify-center gap-3"
-              >
-                <iconify-icon
-                  icon="logos:google-icon"
-                  style={{ fontSize: "18px" }}
-                ></iconify-icon>
-                Continue with Google
-              </button>
 
               <p className="text-center text-sm text-taupe font-light mt-2">
                 Don't have an account?{" "}
@@ -168,15 +154,39 @@ const Login = () => {
       {/* Global Footer (Full Width) */}
       <div className="w-full bg-[#f8f5f1] border-t border-[#DCD3C9] py-3 px-8 flex flex-col md:flex-row justify-between items-center gap-4 z-50">
         <div className="flex items-center gap-2">
-          <span className="w-6 h-6 rounded-full bg-taupe flex items-center justify-center text-white text-[10px]">E</span>
-          <span className="text-xs font-bold tracking-widest uppercase">Essentia Lux</span>
+          <span className="w-6 h-6 rounded-full bg-taupe flex items-center justify-center text-white text-[10px]">
+            E
+          </span>
+          <span className="text-xs font-bold tracking-widest uppercase">
+            Essentia Lux
+          </span>
         </div>
-        
+
         <div className="flex flex-wrap justify-center gap-x-10 text-[10px] uppercase tracking-widest text-[#A4907C] font-semibold">
-          <Link to="/privacy" className="hover:text-taupe-dark transition-colors underline-animate">Privacy Policy</Link>
-          <Link to="/terms" className="hover:text-taupe-dark transition-colors underline-animate">Terms & Conditions</Link>
-          <Link to="/contact" className="hover:text-taupe-dark transition-colors underline-animate">Contact</Link>
-          <Link to="/shop" className="hover:text-taupe-dark transition-colors underline-animate">Shopping</Link>
+          <Link
+            to="/privacy"
+            className="hover:text-taupe-dark transition-colors underline-animate"
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            to="/terms"
+            className="hover:text-taupe-dark transition-colors underline-animate"
+          >
+            Terms & Conditions
+          </Link>
+          <Link
+            to="/contact"
+            className="hover:text-taupe-dark transition-colors underline-animate"
+          >
+            Contact
+          </Link>
+          <Link
+            to="/shop"
+            className="hover:text-taupe-dark transition-colors underline-animate"
+          >
+            Shopping
+          </Link>
         </div>
 
         <div className="text-[10px] text-[#A4907C] font-medium tracking-[0.2em] uppercase">

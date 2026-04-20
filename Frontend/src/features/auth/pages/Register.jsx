@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../hook/useAuth";
+import SocialButtons from "../components/SocialButtons";
+
 
 const Register = () => {
   const { handleRegister } = useAuth();
@@ -9,15 +11,17 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [role, setRole] = useState("buyer");
 
+
+
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
-    countryCode: "+1",
     contact: "",
     password: "",
     confirmPassword: "",
-    terms: false,
   });
+
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -33,15 +37,11 @@ const Register = () => {
       alert("Passwords do not match!");
       return;
     }
-    if (!formData.terms) {
-      alert("Please agree to the Terms of Service.");
-      return;
-    }
 
     try {
       await handleRegister({
         fullname: formData.fullname,
-        contact: `${formData.countryCode} ${formData.contact}`,
+        contact: `${formData.contact}`,
         email: formData.email,
         password: formData.password,
         isSeller: role === "seller",
@@ -60,9 +60,9 @@ const Register = () => {
         <div className="hidden lg:flex w-1/2 bg-[#F5F1EB] relative overflow-hidden items-center justify-center h-full">
           <div className="absolute inset-0 opacity-40">
             <img
-              src="https://images.unsplash.com/photo-1594932224828-b4b059b6ffc0?auto=format&fit=crop&q=80&w=2000"
+              src="https://images.unsplash.com/photo-1652184513381-9755426e7fd2?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGZhc2hpb24lMjBtb2RlbHxlbnwwfHwwfHx8MA%3D%3D"
               alt="Refined linen texture"
-              className="w-full h-full object-cover mix-blend-multiply filter grayscale-[10%]"
+              className="w-full h-full object-cover object-top-left mix-blend-multiply filter grayscale-[10%]"
             />
           </div>
           <div className="relative z-10 p-10 max-w-xl text-center md:text-left">
@@ -154,17 +154,7 @@ const Register = () => {
                   Contact Number
                 </label>
                 <div className="flex items-center gap-3">
-                  <select
-                    name="countryCode"
-                    value={formData.countryCode}
-                    onChange={handleChange}
-                    className="bg-transparent border-none focus:ring-0 text-taupe text-[10px] p-0 cursor-pointer outline-none"
-                  >
-                    <option value="+1">+1</option>
-                    <option value="+44">+44</option>
-                    <option value="+91">+91</option>
-                    <option value="+33">+33</option>
-                  </select>
+            
                   <input
                     type="tel"
                     name="contact"
@@ -217,6 +207,8 @@ const Register = () => {
                 </div>
               </div>
 
+
+
               <div className="input-focus-effect group border-b border-[#DCD3C9] py-1.5">
                 <div className="flex justify-between items-center">
                   <label className="block text-[9px] uppercase tracking-widest text-[#A4907C] mb-0.5 font-semibold">
@@ -239,40 +231,15 @@ const Register = () => {
                     className="absolute right-0 text-taupe hover:text-taupe-dark transition-colors"
                   >
                     <iconify-icon
-                      icon={showConfirmPassword ? "lucide:eye-off" : "lucide:eye"}
+                      icon={
+                        showConfirmPassword ? "lucide:eye-off" : "lucide:eye"
+                      }
                       style={{ fontSize: "18px" }}
                     ></iconify-icon>
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 py-1.5">
-                <input
-                  type="checkbox"
-                  name="terms"
-                  checked={formData.terms}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 w-4 h-4 rounded border-[#DCD3C9] text-taupe focus:ring-taupe accent-taupe cursor-pointer"
-                />
-                <label className="text-[10px] text-taupe leading-relaxed">
-                  I agree to the{" "}
-                  <Link
-                    to="/terms"
-                    className="text-taupe-dark font-medium underline-animate"
-                  >
-                    Terms
-                  </Link>{" "}
-                  &{" "}
-                  <Link
-                    to="/privacy"
-                    className="text-taupe-dark font-medium underline-animate"
-                  >
-                    Privacy
-                  </Link>
-                  .
-                </label>
-              </div>
 
               <button
                 type="submit"
@@ -286,6 +253,9 @@ const Register = () => {
                 ></iconify-icon>
               </button>
             </form>
+
+            <SocialButtons />
+
 
             <p className="mt-6 text-center text-sm text-taupe font-light">
               Already have an account?
@@ -303,15 +273,39 @@ const Register = () => {
       {/* Global Footer (Full Width) */}
       <div className="w-full bg-[#f8f5f1] border-t border-[#DCD3C9] py-3 px-8 flex flex-col md:flex-row justify-between items-center gap-4 z-50">
         <div className="flex items-center gap-2">
-          <span className="w-6 h-6 rounded-full bg-taupe flex items-center justify-center text-white text-[10px]">E</span>
-          <span className="text-xs font-bold tracking-widest uppercase text-taupe-dark font-satoshi">Essentia Lux</span>
+          <span className="w-6 h-6 rounded-full bg-taupe flex items-center justify-center text-white text-[10px]">
+            E
+          </span>
+          <span className="text-xs font-bold tracking-widest uppercase text-taupe-dark font-satoshi">
+            Essentia Lux
+          </span>
         </div>
-        
+
         <div className="flex flex-wrap justify-center gap-x-10 gap-y-2 text-[10px] uppercase tracking-widest text-[#A4907C] font-semibold">
-          <Link to="/privacy" className="hover:text-taupe-dark transition-colors underline-animate">Privacy Policy</Link>
-          <Link to="/terms" className="hover:text-taupe-dark transition-colors underline-animate">Terms & Conditions</Link>
-          <Link to="/contact" className="hover:text-taupe-dark transition-colors underline-animate">Contact</Link>
-          <Link to="/shop" className="hover:text-taupe-dark transition-colors underline-animate">Shopping</Link>
+          <Link
+            to="/privacy"
+            className="hover:text-taupe-dark transition-colors underline-animate"
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            to="/terms"
+            className="hover:text-taupe-dark transition-colors underline-animate"
+          >
+            Terms & Conditions
+          </Link>
+          <Link
+            to="/contact"
+            className="hover:text-taupe-dark transition-colors underline-animate"
+          >
+            Contact
+          </Link>
+          <Link
+            to="/shop"
+            className="hover:text-taupe-dark transition-colors underline-animate"
+          >
+            Shopping
+          </Link>
         </div>
 
         <div className="text-[10px] text-[#A4907C] font-medium tracking-[0.2em] uppercase">

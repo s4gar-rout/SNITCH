@@ -77,7 +77,11 @@ export const login = async (req, res) => {
 }
 
 export const googleCallback = async (req, res) => {
+  if (!req.user) {
+    return res.redirect("http://localhost:5173/login?error=auth_failed");
+  }
   const { id, displayName, emails, photos } = req.user
+
   const email = emails[0].value;
   const profilePic = photos[0].value;
 
